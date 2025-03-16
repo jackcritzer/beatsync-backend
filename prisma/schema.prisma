@@ -20,6 +20,7 @@ model User {
   password  String
   createdAt DateTime    @default(now())
   groups    GroupUser[]
+  tracks    Track[]
 }
 
 model Group {
@@ -28,6 +29,7 @@ model Group {
   description String?
   createdAt   DateTime    @default(now())
   users       GroupUser[]
+  tracks      Track[]
 }
 
 model GroupUser {
@@ -37,4 +39,21 @@ model GroupUser {
   group   Group  @relation(fields: [groupId], references: [id])
 
   @@id([userId, groupId])
+}
+
+model Track {
+  id           String    @id @default(uuid())
+  title        String
+  url          String
+  type         TrackType @default(FILE)
+  uploadedBy   User      @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+  uploadedById String
+  group        Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId      String
+  createdAt    DateTime  @default(now())
+}
+
+enum TrackType {
+  FILE // Uploaded to AWS S3
+  LINK // External link (YouTube, SoundCloud, etc.)
 }
