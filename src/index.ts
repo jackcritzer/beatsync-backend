@@ -9,6 +9,8 @@ import configSecrets from './secrets';
 async function initializeApp() {
     await configSecrets();
 
+    const { PrismaClient } = await import("@prisma/client"); // ✅ Load Prisma only after secrets are set
+
     const app = express();
     app.use(express.json());
     app.use(cors());
