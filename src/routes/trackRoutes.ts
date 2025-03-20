@@ -4,6 +4,7 @@ import authMiddleware from '../middleware/authMiddleware';
 import multer from 'multer';
 import multerS3 from "multer-s3";
 
+// Create Multer instance
 const upload = multer({
     storage: multerS3({
         s3,
