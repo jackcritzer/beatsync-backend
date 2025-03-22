@@ -41,6 +41,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { getSSMParameter } from "./secrets";
+import { DEMO_MODE } from "./config";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -55,7 +56,7 @@ async function start() {
     process.env.AWS_REGION = await getSSMParameter("/beatsync/AWS_REGION");
     process.env.S3_BUCKET_NAME = await getSSMParameter("/beatsync/S3_BUCKET_NAME");
 
-    console.log("Secrets loaded successfully")
+    console.log(`Secrets loaded successfully`)
 
     // Now that secrets are loaded, you can import your routes
     const authRoutes = (await import("./routes/authRoutes")).default;
@@ -68,7 +69,7 @@ async function start() {
 
     app.use('/api/auth', authRoutes);
     app.use('/api/groups', groupRoutes);
-    app.use("/api/tracks", trackRoutes(process.env.S3_BUCKET!));
+    app.use("/api/tracks", trackRoutes(process.env.S3_BUCKET_NAME!));
 
     app.listen(PORT, () => {
         console.log(`🚀 Server running on port ${PORT}`);
