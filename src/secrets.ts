@@ -2,7 +2,7 @@ import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 
 const ssm = new SSMClient({ region: "us-east-1" });
 
-async function getSSMParameter(name: string) {
+export async function getSSMParameter(name: string) {
     const command = new GetParameterCommand({ Name: name, WithDecryption: true });
     const response = await ssm.send(command);
     return response.Parameter?.Value;

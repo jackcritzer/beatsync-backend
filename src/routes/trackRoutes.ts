@@ -4,7 +4,7 @@ import authMiddleware from '../middleware/authMiddleware';
 import multer from 'multer';
 import multerS3 from "multer-s3";
 
-// Create Multer instance
+/* // Create Multer instance
 const upload = multer({
     storage: multerS3({
         s3,
@@ -23,3 +23,24 @@ router.get("/group/:groupId", authMiddleware, getTracksByGroup);
 router.delete("/:trackId", authMiddleware, deleteTrack);
 
 export default router;
+ */
+
+export default (bucketName: string) => {
+    const upload = multer({
+      storage: multerS3({
+        s3,
+        bucket: bucketName,
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        key: function (req, file, cb) {
+            cb(null, `tracks/${Date.now()}-${file.originalname}`);
+        },
+      })
+    });
+  
+    const router = express.Router();
+    router.post("/upload", upload.single("file"), uploadTrack);
+    router.get("/group/:groupId", authMiddleware, getTracksByGroup);
+    router.delete("/:trackId", authMiddleware, deleteTrack);
+  
+    return router;
+};

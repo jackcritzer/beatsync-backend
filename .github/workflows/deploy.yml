@@ -30,5 +30,7 @@ jobs:
           key: ${{ secrets.BEATSYNC_EC2_SSH_KEY }}
           script: |
             cd ~/beatsync
-            npm install
-            pm2 restart all
+            docker stop beatsync || true
+            docker rm beatsync || true
+            docker build -t beatsync-backend .
+            docker run -d -p 3000:3000 --name beatsync beatsync-backend
