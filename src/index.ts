@@ -17,7 +17,7 @@ async function start() {
     process.env.AWS_REGION = await getSSMParameter("/beatsync/AWS_REGION");
     process.env.S3_BUCKET_NAME = await getSSMParameter("/beatsync/S3_BUCKET_NAME");
 
-    console.log(`Secrets loaded successfully DEMO_MODE=${DEMO_MODE}, BUCKET_NAME=${process.env.S3_BUCKET_NAME}`)
+    console.log(`Secrets loaded successfully`)
 
     // Now that secrets are loaded, you can import your routes
     const authRoutes = (await import("./routes/authRoutes")).default;
