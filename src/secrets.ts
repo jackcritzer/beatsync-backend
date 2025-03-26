@@ -4,6 +4,7 @@ import { DEMO_MODE } from "./config";
 const ssm = new SSMClient({ region: "us-east-1" });
 
 export async function getSSMParameter(name: string) {
+    console.log(`Get SSM ${name} DEMO_MODE=${DEMO_MODE}`)
     if (DEMO_MODE) {
         const demoValues: Record<string, string> = {
             "/beatsync/DATABASE_URL": "demo://fake-db",
