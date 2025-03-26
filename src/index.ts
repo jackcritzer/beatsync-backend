@@ -28,6 +28,11 @@ async function start() {
     app.use(morgan("dev"));
     app.use(express.json());
 
+    // Base Route
+    app.get("/", (req, res) => {
+        res.send("🎵 Beatsync API is up and running!");
+    });
+
     app.use('/api/auth', authRoutes);
     app.use('/api/groups', groupRoutes);
     app.use("/api/tracks", trackRoutes(process.env.S3_BUCKET_NAME!));
