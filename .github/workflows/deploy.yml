@@ -33,5 +33,5 @@ jobs:
             docker stop beatsync || true
             docker rm beatsync || true
             docker build -t beatsync-backend .
-            docker run -d -p 3000:3000 -e DEMO_MODE=true --name beatsync beatsync-backend
+            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name beatsync beatsync-backend
 
