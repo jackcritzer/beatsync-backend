@@ -16,22 +16,22 @@ jobs:
       - name: Copy files to EC2 via SSH
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.BEATSYNC_EC2_HOST }}
+          host: ${{ secrets.CADENCE_EC2_HOST }}
           username: ec2-user
-          key: ${{ secrets.BEATSYNC_EC2_SSH_KEY }}
+          key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
           source: "."
-          target: "~/beatsync"
+          target: "~/cadence"
 
-      - name: Restart BeatSync on EC2
+      - name: Restart Cadence on EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.BEATSYNC_EC2_HOST }}
+          host: ${{ secrets.CADENCE_EC2_HOST }}
           username: ec2-user
-          key: ${{ secrets.BEATSYNC_EC2_SSH_KEY }}
+          key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
           script: |
-            cd ~/beatsync
-            docker stop beatsync || true
-            docker rm beatsync || true
-            docker build -t beatsync-backend .
-            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name beatsync beatsync-backend
+            cd ~/cadence
+            docker stop cadence || true
+            docker rm cadence || true
+            docker build -t cadence-backend .
+            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name cadence cadence-backend
 
