@@ -30,6 +30,12 @@ jobs:
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
           script: |
             cd ~/cadence
+
+            # Cleanup step
+            docker container prune -f
+            docker image prune -a -f
+            docker builder prune -a -f
+
             docker stop cadence || true
             docker rm cadence || true
             docker build -t cadence-backend .
