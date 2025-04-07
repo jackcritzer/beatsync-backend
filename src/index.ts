@@ -9,13 +9,13 @@ const PORT = process.env.PORT || 3000;
 
 async function start() {
     // Load secrets BEFORE importing routes or initializing anything that uses them
-    process.env.PORT = await getSSMParameter("/beatsync/PORT") || "5000";
-    process.env.JWT_SECRET = await getSSMParameter("/beatsync/JWT_SECRET");
-    process.env.DATABASE_URL = await getSSMParameter("/beatsync/DATABASE_URL");
-    process.env.AWS_ACCESS_KEY_ID = await getSSMParameter("/beatsync/AWS_ACCESS_KEY_ID");
-    process.env.AWS_SECRET_ACCESS_KEY = await getSSMParameter("/beatsync/AWS_SECRET_ACCESS_KEY");
-    process.env.AWS_REGION = await getSSMParameter("/beatsync/AWS_REGION");
-    process.env.S3_BUCKET_NAME = await getSSMParameter("/beatsync/S3_BUCKET_NAME");
+    process.env.PORT = await getSSMParameter("/cadence/PORT") || "5000";
+    process.env.JWT_SECRET = await getSSMParameter("/cadence/JWT_SECRET");
+    process.env.DATABASE_URL = await getSSMParameter("/cadence/DATABASE_URL");
+    process.env.AWS_ACCESS_KEY_ID = await getSSMParameter("/cadence/AWS_ACCESS_KEY_ID");
+    process.env.AWS_SECRET_ACCESS_KEY = await getSSMParameter("/cadence/AWS_SECRET_ACCESS_KEY");
+    process.env.AWS_REGION = await getSSMParameter("/cadence/AWS_REGION");
+    process.env.S3_BUCKET_NAME = await getSSMParameter("/cadence/S3_BUCKET_NAME");
 
     console.log(`Secrets loaded successfully`)
 
@@ -30,7 +30,7 @@ async function start() {
 
     // Base Route
     app.get("/", (req, res) => {
-        res.send("🎵 Beatsync API is up and running!");
+        res.send("🎵 Cadence API is up and running! 🎵");
     });
 
     app.use('/api/auth', authRoutes);
