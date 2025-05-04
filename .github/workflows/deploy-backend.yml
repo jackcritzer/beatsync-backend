@@ -21,8 +21,9 @@ jobs:
           host: ${{ secrets.CADENCE_EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
-          source: "apps/backend/*"  # Don't copy the folder itself
-          target: "~/cadence/apps/backend"  # Destination where Dockerfile should live
+          source: "apps/backend"
+          target: "~/cadence/apps/backend"
+          strip_components: 2  # <== This is the key fix
 
       - name: Restart Cadence on EC2
         uses: appleboy/ssh-action@master
