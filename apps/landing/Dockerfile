@@ -1,4 +1,4 @@
-# Use Node 18 like backend
+# Use official Node.js image
 FROM node:18
 
 # Set working directory
