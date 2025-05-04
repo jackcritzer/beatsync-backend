@@ -1,6 +1,8 @@
 'use client';
 import { useState } from "react";
 
+import FormCTAButton from "./FormCTAButton";
+
 export default function WaitlistForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [showSuccess, setShowSuccess] = useState(false);
@@ -40,7 +42,7 @@ export default function WaitlistForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap items-center gap-x-4 gap-y-2">
+    <form onSubmit={handleSubmit} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mt-8">
       <label htmlFor="email" className="text-nase text-white">
         Email
       </label>
@@ -48,18 +50,13 @@ export default function WaitlistForm() {
         id="email"
         name="Email"
         type="email"
+        autoComplete="email"
         placeholder="you@example.com"
         required
         className="bg-transparent border border-white px-4 py-2 text-m text-white rounded"
       />
       <input type="hidden" name="Created" value="x-sheetmonkey-current-date-time" />
-      <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded cursor-pointer"
-        disabled={status === "loading"}
-      >
-        {status === "loading" ? "Submitting..." : "Join Waitlist"}
-      </button>
+      <FormCTAButton status={status}/>
       {status === "error" && (
         <p className="text-red-400 text-sm w-full">Something went wrong. Try again later.</p>
       )}

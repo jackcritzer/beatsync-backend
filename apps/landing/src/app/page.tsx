@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <ValueProps />
       <Mission />
-      <WaitlistForm />
+      <WaitlistForm />    
     </main>
   );
 }
