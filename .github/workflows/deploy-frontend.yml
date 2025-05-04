@@ -21,8 +21,8 @@ jobs:
           host: ${{ secrets.CADENCE_EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
-          source: "apps/frontend/*"
-          target: "~/cadence/apps/frontend"
+          source: "apps/frontend"
+          target: "~/cadence/apps"
 
       - name: Restart Frontend on EC2
         uses: appleboy/ssh-action@master
