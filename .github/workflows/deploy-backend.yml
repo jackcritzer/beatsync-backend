@@ -1,9 +1,11 @@
-name: Deploy to AWS EC2
+name: Deploy Backend
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'apps/backend/**'
 
 jobs:
   deploy:
@@ -19,8 +21,8 @@ jobs:
           host: ${{ secrets.CADENCE_EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
-          source: "."
-          target: "~/cadence"
+          source: "apps/backend"
+          target: "~/cadence/apps"
 
       - name: Restart Cadence on EC2
         uses: appleboy/ssh-action@master
@@ -29,15 +31,16 @@ jobs:
           username: ec2-user
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
           script: |
-            cd ~/cadence
+            cd ~/cadence/apps/backend
 
             # Cleanup step
+            docker stop cadence-backend || true
+            docker rm cadence-backend || true
             docker container prune -f
-            docker image prune -a -f
-            docker builder prune -a -f
-
-            docker stop cadence || true
-            docker rm cadence || true
+            docker image prune -f
+            docker builder prune -f
+            
+            # Build and run the backend
             docker build -t cadence-backend .
-            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name cadence cadence-backend
+            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name cadence-backend cadence-backend
 
