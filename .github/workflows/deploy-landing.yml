@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'apps/landing/**'
+      - 'apps/landing/**'  
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -21,8 +22,10 @@ jobs:
           host: ${{ secrets.CADENCE_EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
-          source: "apps/landing"
-          target: "~/cadence/apps"
+          source: "apps/landing/"
+          target: "~/cadence/apps/landing"
+          strip_components: 2
+
 
       - name: Restart Landing Page on EC2
         uses: appleboy/ssh-action@master
