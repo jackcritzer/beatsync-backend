@@ -1,0 +1,44 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/frontend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy frontend app to EC2 via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.CADENCE_EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
+          source: "apps/frontend"
+          target: "~/cadence/apps"
+
+      - name: Restart Frontend on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CADENCE_EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
+          script: |
+            cd ~/cadence/apps/frontend
+
+            # Cleanup existing container
+            docker stop cadence-frontend || true
+            docker rm cadence-frontend || true
+            docker image prune -f
+            docker builder prune -f
+
+            # Build and run
+            docker build -t cadence-frontend .
+            docker run -d --restart always -p 3002:3000 --name cadence-frontend cadence-frontend
