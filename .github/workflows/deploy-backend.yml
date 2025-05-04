@@ -24,7 +24,7 @@ jobs:
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
           source: "apps/backend/"
           target: "~/cadence/apps/backend"
-          strip_components: 0
+          strip_components: 1
 
       - name: Restart Cadence on EC2
         uses: appleboy/ssh-action@master
