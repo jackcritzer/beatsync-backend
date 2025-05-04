@@ -31,40 +31,32 @@ jobs:
           username: ec2-user
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
           script: |
-            cd ~/cadence/apps/backend
-            
-            echo "move to backend folder"
+            echo "==> Current directory:"
             pwd
-            ls
+            echo "==> Listing contents:"
+            ls -la
 
-            echo "cleanup step"
-            docker ps
+            cd ~/cadence/apps/backend
 
-            # Cleanup step
+            echo "==> Inside backend folder:"
+            pwd
+            ls -la
+
+            echo "==> Cleanup step"
             docker stop cadence-backend || true
             docker rm cadence-backend || true
             docker container prune -f
             docker image prune -f
             docker builder prune -f
-            
-            echo "done cleanup step"
-            docker ps
-            pwd
-            ls
 
-            echo "Build and run backend"
-            
-            # Build and run the backend
+            echo "==> Building backend..."
             docker build -t cadence-backend .
-            echo "build done"
-            docker ps
-            pwd
-            ls
 
-            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name cadence-backend cadence-backend'
+            echo "==> Running container..."
+            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name cadence-backend cadence-backend
 
-            echo "running"
+            echo "==> Active containers:"
             docker ps
-            pwd
-            ls
+        env:
+          DEBUG: true
 
