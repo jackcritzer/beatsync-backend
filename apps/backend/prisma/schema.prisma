@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relationships
+  projectsOwned  Project[]             @relation("OwnerProjects")
+  collaborations ProjectCollaborator[] @relation("CollaboratorUser")
+  credits        Credit[]              @relation("CreditUser")
+
+  filesUploaded File[] @relation("FileUploader")
+  filesApproved File[] @relation("FileApprover")
+
+  projectComments ProjectComment[] @relation("ProjectCommentAuthor")
+  fileComments    FileComment[]    @relation("FileCommentAuthor")
+  messages        ProjectMessage[] @relation("ProjectMessageAuthor")
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ownerId String
+  owner   User   @relation("OwnerProjects", fields: [ownerId], references: [id])
+
+  files         File[]                @relation("FileProject")
+  credits       Credit[]              @relation("CreditProject")
+  comments      ProjectComment[]      @relation("CommentProject")
+  collaborators ProjectCollaborator[] @relation("CollaboratorProjects")
+  messages      ProjectMessage[]      @relation("MessageProject")
+}
+
+model ProjectCollaborator {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  projectId String
+
+  user    User    @relation("CollaboratorUser", fields: [userId], references: [id])
+  project Project @relation("CollaboratorProjects", fields: [projectId], references: [id])
+
+  @@unique([userId, projectId]) // prevent duplicates
+}
+
+model File {
+  id         String    @id @default(uuid())
+  name       String
+  url        String // S3 link
+  type       String // "stem", "mix", "reference", etc.
+  uploadedAt DateTime  @default(now())
+  approved   Boolean   @default(false)
+  approvedAt DateTime?
+
+  uploaderId   String
+  projectId    String
+  approvedById String?
+
+  // Relationships
+  uploader   User    @relation("FileUploader", fields: [uploaderId], references: [id])
+  project    Project @relation("FileProject", fields: [projectId], references: [id])
+  approvedBy User?   @relation("FileApprover", fields: [approvedById], references: [id])
+
+  comments FileComment[] @relation("CommentFile")
+}
+
+model Credit {
+  id   String @id @default(uuid())
+  role String //"producer", "vocalist", etc.
+
+  userId    String
+  projectId String
+
+  user    User    @relation("CreditUser", fields: [userId], references: [id])
+  project Project @relation("CreditProject", fields: [projectId], references: [id])
+}
+
+model ProjectComment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId  String
+  projectId String
+
+  author  User    @relation("ProjectCommentAuthor", fields: [authorId], references: [id])
+  project Project @relation("CommentProject", fields: [projectId], references: [id])
+}
+
+model FileComment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId String
+  fileId   String
+
+  author User @relation("FileCommentAuthor", fields: [authorId], references: [id])
+  file   File @relation("CommentFile", fields: [fileId], references: [id])
+}
+
+model ProjectMessage {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId  String
+  projectId String
+
+  author  User    @relation("ProjectMessageAuthor", fields: [authorId], references: [id])
+  project Project @relation("MessageProject", fields: [projectId], references: [id])
+}
