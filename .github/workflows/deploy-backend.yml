@@ -32,6 +32,13 @@ jobs:
           key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
           script: |
             cd ~/cadence/apps/backend
+            
+            echo "move to backend folder"
+            pwd
+            ls
+
+            echo "cleanup step"
+            docker ps
 
             # Cleanup step
             docker stop cadence-backend || true
@@ -40,7 +47,24 @@ jobs:
             docker image prune -f
             docker builder prune -f
             
+            echo "done cleanup step"
+            docker ps
+            pwd
+            ls
+
+            echo "Build and run backend"
+            
             # Build and run the backend
             docker build -t cadence-backend .
-            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name cadence-backend cadence-backend
+            echo "build done"
+            docker ps
+            pwd
+            ls
+
+            docker run -d --restart always -p 3000:3000 -e DEMO_MODE=true --name cadence-backend cadence-backend'
+
+            echo "running"
+            docker ps
+            pwd
+            ls
 
