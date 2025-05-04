@@ -1,7 +1,13 @@
-# 🎧 BeatSync – Backend API
+# 🎧 Cadence – Music Collaboration Platform
 
-**BeatSync** is a backend API for a music collaboration platform that lets users upload and organize tracks, create groups, and share music projects.  
-Built with **Node.js**, **Express**, **PostgreSQL**, and deployed with **Docker on AWS EC2**, it uses **AWS SSM Parameter Store** for secret management and **GitHub Actions** for CI/CD.
+**Cadence** is a fullstack music collaboration tool that helps artists share tracks, manage group projects, and stay organized.
+
+This monorepo contains:
+- 🧠 `apps/backend`: a Dockerized Express/Node.js API with Prisma + PostgreSQL
+- 🎯 `apps/landing`: a Tailwind + Next.js landing page with a waitlist
+- 📦 `apps/frontend` (coming soon): the interactive artist dashboard (Next.js)
+
+> 🚧 The backend is currently the most complete component and powers the API. More frontend features are in development.
 
 ---
 
@@ -12,7 +18,7 @@ Built with **Node.js**, **Express**, **PostgreSQL**, and deployed with **Docker 
 - **Cloud**: AWS EC2, S3 (for file uploads), SSM (for secret storage)
 - **CI/CD**: GitHub Actions → EC2 via SSH + Docker
 - **Containerization**: Docker
-- **Deployment**: PM2 (optional), systemd, and Docker with auto-rebuilds
+- **Deployment**: Docker-based with optional PM2 or systemd
 
 ---
 
@@ -20,7 +26,7 @@ Built with **Node.js**, **Express**, **PostgreSQL**, and deployed with **Docker 
 
 - 🔐 **JWT Authentication** with role-based access
 - 🎵 **Track Uploads** to S3 via `multer-s3`
-- 🎛 **Group and Project Management**
+- 🧑‍🤝‍🧑 **Group and Project Management**
 - 📦 **Dockerized Backend** with secure environment variable loading
 - 🔄 **Auto-Deployment via GitHub Actions**
 - 🔐 **Secrets managed securely with AWS SSM Parameter Store**
@@ -30,15 +36,17 @@ Built with **Node.js**, **Express**, **PostgreSQL**, and deployed with **Docker 
 ## 📂 Folder Structure
 
 ```
-beatsync/
-├── src/
-│   ├── routes/           # API endpoints
-│   ├── secrets.ts        # Loads secrets from AWS SSM
-│   ├── index.ts          # Entry point
-├── prisma/
-│   └── schema.prisma     # Prisma schema (PostgreSQL)
-├── Dockerfile
-├── .github/workflows/deploy.yml
+cadence/
+├── apps/
+│   └── backend/
+│       ├── src/
+│       │   ├── routes/           # API endpoints
+│       │   ├── secrets.ts        # Loads secrets from AWS SSM
+│       │   ├── index.ts          # Entry point
+│       ├── prisma/
+│       │   └── schema.prisma     # Prisma schema (PostgreSQL)
+│       ├── Dockerfile
+│       └── .github/workflows/deploy-backend.yml
 ```
 
 ---
@@ -54,26 +62,30 @@ You can run the backend **without any AWS credentials or real infrastructure** b
 
    ```bash
    cp .env.example .env
-3. Make sure this is set in your .env file:
+   ```
+3. Make sure this is set in your `.env` file:
+   ```env
    DEMO_MODE=true
+   ```
 4. Run the app:
+   ```bash
    npm install
    npm run build
    npm start
+   ```
 
 ✅ This will run the API with:
 - Simulated S3 uploads
 - Dummy authentication
 - No actual DB connection or AWS usage
 
-
 ### 🐳 Dockerized Demo Mode
 
 If you prefer Docker:
 
 ```bash
-docker build -t beatsync-backend .
-docker run -d --env-file .env -p 3000:3000 --name beatsync beatsync-backend
+docker build -t cadence-backend .
+docker run -d --env-file .env -p 3000:3000 --name cadence-backend cadence-backend
 ```
 
 ---
@@ -101,7 +113,7 @@ docker run -d --env-file .env -p 3000:3000 --name beatsync beatsync-backend
 
 You can view the workflow in:
 ```
-.github/workflows/deploy.yml
+.github/workflows/deploy-backend.yml
 ```
 
 ---
