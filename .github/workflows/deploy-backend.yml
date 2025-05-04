@@ -24,6 +24,16 @@ jobs:
           source: "apps/backend/**"
           target: "~/cadence/apps/backend"
 
+      - name: Ensure backend directory exists
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CADENCE_EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.CADENCE_EC2_SSH_KEY }}
+          script: |
+            rm -rf ~/cadence/apps/backend
+            mkdir -p ~/cadence/apps/backend
+
       - name: Restart Cadence on EC2
         uses: appleboy/ssh-action@master
         with:
