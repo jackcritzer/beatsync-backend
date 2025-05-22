@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+@theme {
+  --color-mustard: #E3B25D;
+  --color-secondary_accent: #C4934A;
+  --color-sage: #8AA260;
+  --color-deep_green: #5D7446;
+  --color-background_light: #F5F0E8;
+  --color-text_primary: #3E4C4B;
+  --color-text_muted: #6B606D;
+  --color-muted_gray: #8E918F;
+  --color-divider_gray: #D6D2CA;
+  --color-highlight_coral: #E57C6B;
+  --color-test: #9b0303;
+
+  /* 🔤 Typography: Font Families */
+  --font-dmsans: "DM Sans", ui-sans-serif, system-ui;
+  --font-inter: "Inter", ui-sans-serif, system-ui;
+
+  /* 🔤 Typography: Sizes */
+  --text-h1-size: 48px;
+  --text-h1-line: 56px;
+  --text-h1-weight: 700;
+
+  --text-h2-size: 32px;
+  --text-h2-line: 40px;
+  --text-h2-weight: 500;
+
+  --text-h3-size: 24px;
+  --text-h3-line: 32px;
+  --text-h3-weight: 500;
+
+  --text-body-size: 16px;
+  --text-body-line: 24px;
+  --text-body-weight: 400;
+
+  --text-body-emphasis-weight: 500;
+
+  --text-small-size: 14px;
+  --text-small-line: 20px;
+  --text-small-weight: 400;
+
+  --text-caption-size: 12px;
+  --text-caption-line: 16px;
+  --text-caption-weight: 500;
+
+  --text-button-size: 14px;
+  --text-button-line: 20px;
+  --text-button-weight: 500;
+
+  --text-tag-size: 12px;
+  --text-tag-line: 16px;
+  --text-tag-weight: 500;
+
+  --text-label-size: 12px;
+  --text-label-line: 16px;
+  --text-label-weight: 500;
+  --text-label-spacing: 0.05em;
+  --text-label-transform: uppercase;
+}

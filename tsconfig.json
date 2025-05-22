@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@cadence/design-system": ["packages/design-system/src/components"],
+      "@cadence/design-system/*": ["packages/design-system/src/components/*"]
+    },
+
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+
+    "jsx": "preserve",
+    "jsxImportSource": "react",
+
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts"],
+  "exclude": ["node_modules"]
+}

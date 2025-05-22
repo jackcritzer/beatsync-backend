@@ -1,0 +1,35 @@
+{
+  "name": "cadence-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:landing": "cd apps/landing && next dev",
+    "dev:frontend": "npm --workspace=apps/frontend run dev",
+    "dev:backend": "npm --workspace=apps/backend run dev",
+    "build": "npm run build:landing && npm run build:frontend && npm run build:backend",
+    "build:landing": "npm --workspace=apps/landing run build",
+    "build:frontend": "npm --workspace=apps/frontend run build",
+    "build:backend": "npm --workspace=apps/backend run build"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.0",
+    "@tailwindcss/postcss": "^4.1.7",
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.3.1",
+    "next-transpile-modules": "^10.0.1",
+    "postcss": "^8.5.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.7",
+    "tailwindcss": "^4.1.7"
+  }
+}

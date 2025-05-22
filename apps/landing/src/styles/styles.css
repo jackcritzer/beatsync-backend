@@ -1,0 +1,22 @@
+@import "tailwindcss" source("../../");
+@import "@cadence/design-system/theme.css";
+
+@tailwind base;
+
+/* 2) Your body defaults go into the base layer: */
+@layer base {
+  body {
+    background-color: var(--background_light);
+    color:            var(--text_primary);
+  }
+}
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer utilities {
+  .litmus {
+    @apply bg-red-600 text-white p-0;
+  }
+}

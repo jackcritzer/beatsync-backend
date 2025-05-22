@@ -9,7 +9,7 @@ export default function HeaderCTAButton({ className = "" }: HeaderCTAButtonProps
     return (
         <button
             onClick={scrollToTop}
-            className={`${ctaButtonClass}${className} cursor-pointer`}
+            className={`${ctaButtonClass}${className} cursor-pointer bg-deep_green`}
         >
             Join Waitlist
         </button>
